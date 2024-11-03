@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Solutions Company</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        /* Navbar and Hamburger Styles */
+        .navbar {
+            background: linear-gradient(to right, #2c3e50, #3498db);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand h1 {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .brand-icon {
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .navbar h1 {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .hamburger {
+            width: 30px;
+            height: 20px;
+            position: relative;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+        .hamburger span:nth-child(3) { bottom: 0; }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg);
+            top: 50%;
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg);
+            bottom: 40%;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: rgba(44, 62, 80, 0.98);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: right 0.5s ease;
+            z-index: 1000;
+        }
+
+        .menu-overlay.active {
+            right: 0;
+        }
+
+        .nav-links {
+            list-style: none;
+            text-align: center;
+        }
+
+        .nav-links li {
+            margin: 2rem 0;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.5s ease;
+        }
+
+        .menu-overlay.active .nav-links li {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3498db;
+        }
+
+        .nav-links li:nth-child(1) { transition-delay: 0.1s; }
+        .nav-links li:nth-child(2) { transition-delay: 0.2s; }
+        .nav-links li:nth-child(3) { transition-delay: 0.3s; }
+        .nav-links li:nth-child(4) { transition-delay: 0.4s; }
+
+        /* Hero Section */
+        .hero {
+            background: url('img/log.jpg') center/cover;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 60px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Solutions Grid */
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .solution-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .solution-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .solution-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .solution-card:hover .solution-image img {
+            transform: scale(1.1);
+        }
+
+        .solution-content {
+            padding: 1.5rem;
+        }
+
+        .solution-content h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .solution-content p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #2980b9;
+        }
+
+        /* Footer */
+        /* .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 2rem;
+            
+        }
+
+        .footer p {
+            margin: 1rem 0;
+        } */
+
+        .footer {
+            background: linear-gradient(to right, #000000, #0469b12a);
+            /* background-color: #2c3e50; */
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: gold;
+        }
+
+        .footer-divider {
+            width: 60px;
+            border-top: 2px solid #ddd;
+            margin: 20px auto;
+        }
+
+        .footer-address,
+        .footer-copyright {
+            color: whitesmoke;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+            
+            .solutions-grid {
+                padding: 2rem 1rem;
+            }
+        }
+        .horizontal-line-1 {
+            width: 100%;
+            border: 1px solid #000000;
+            opacity: 0.3;
+            margin: 10px 0;
+        }
+
+        .testimonial-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.testimonial-box {
+    display: flex;
+    align-items: center;
+    max-width: 600px;
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.arrow {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #3498db;
+    padding: 10px;
+}
+
+.testimonial-content {
+    margin: 0 20px;
+}
+
+.testimonial-text {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.author-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.author-image img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.author-name {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: 10px;
+}
+/* Centered Title for Testimonial Section */
+.testimonial-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0;
+    color:#3498db;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="brand">
+            <span class="brand-icon">🏠</span>
+            <h1>TechCore Solutions</h1>
+        </div>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+     
+    <!-- <nav class="navbar">
+        <h1>TechCore Solutions</h1>
+        
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav> -->
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay">
+        <ul class="nav-links">
+            <li><a href="practice.html">Home</a></li>
+             <li><a href="services.html">Services</a></li> 
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h2>Innovative IT Solutions</h2>
+            <p>Transforming businesses through cutting-edge technology and expert solutions</p>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <div class="solutions-grid" id="services">
+        <div class="solution-card">
+            <div class="solution-image">
+                <img src="img/cloud (3).jpg" alt="Cloud Solutions">
+            </div>
+            <div class="solution-content">
+                <h3>Cloud Solutions</h3>
+                <p>Secure and scalable cloud infrastructure for your growing business needs.</p>
+                <a href="services.html#cloud-solutions" class="cta-button">Learn More</a>
+            </div>
+        </div>
+
+        <div class="solution-card" >
+            <div class="solution-image">
+                <img src="img/cyb.jpg" alt="Cybersecurity">
+            </div>
+            <div class="solution-content">
+                <h3>Cybersecurity</h3>
+                <p>Protect your business with our advanced security solutions and monitoring.</p>
+                <a href="services.html#cybersecurity" class="cta-button">Learn More</a>
+            </div>
+        </div>
+
+        <div class="solution-card">
+            <div class="solution-image">
+                <img src="img/hacker.jpg" alt="Network Solutions">
+            </div>
+            <div class="solution-content">
+                <h3>Network Solutions</h3>
+                <p>Reliable and fast networking infrastructure for seamless operations.</p>
+                <a href="services.html#networking" class="cta-button">Learn More</a>
+            </div>
+        </div>
+
+        <div class="solution-card">
+            <div class="solution-image">
+                <img src="img/consulting.jpg" alt="IT Consulting">
+            </div>
+            <div class="solution-content">
+                <h3>IT Consulting</h3>
+                <p>Expert guidance to optimize your technology investments and strategy.</p>
+                <a href="services.html#consulting" class="cta-button">Learn More</a>
+            </div>
+        </div>
+    </div>
+    <hr class="horizontal-line-1">
+
+   <!-- Testimonial Section -->
+    <!-- Title for Testimonial Section -->
+    <h2 class="testimonial-title">Check My Testimonial</h2>
+   <div class="testimonial-container">
+    <div class="testimonial-box">
+        <button class="arrow left-arrow" id="prevBtn">&#9664;</button>
+        <div class="testimonial-content">
+            <p class="testimonial-text" id="testimonialText">
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque."
+            </p>
+            <div class="author-info">
+                <div class="author-image">
+                    <img src="https://via.placeholder.com/50" id="authorImage" alt="Author">
+                </div>
+                <p class="author-name" id="authorName">John Doe, CTO of Client Company</p>
+            </div>
+        </div>
+        <button class="arrow right-arrow" id="nextBtn">&#9654;</button>
+    </div>
+</div>
+    
+    <!-- Footer -->
+    <!-- <footer class="footer" id="contact">
+        <h3>Contact Us</h3>
+        <p>Email: info@techcore.com</p>
+        <p>Phone: (555) 123-4567</p>
+        <p>&copy; 2024 TechCore Solutions. All rights reserved.</p>
+    </footer> -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="practice.html">Home</a>
+            <a href="services.html">Services</a>
+            <a href="about.html">About</a>
+            <!-- <a href="#testimonials">Testimonials</a> -->
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-address">1717 Harrison St, San Francisco, CA 94103, USA</div>
+        <div class="footer-copyright">© 2024 A&N IT Solutions. All rights reserved.</div>
+    </footer>
+
+
+    <!-- JavaScript -->
+    <script>
+
+        
+        const hamburger = document.querySelector('.hamburger');
+        const menuOverlay = document.querySelector('.menu-overlay');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        // Toggle menu
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            document.body.style.overflow = menuOverlay.classList.contains('active') ? 'hidden' : 'auto';
+        });
+
+        
+
+        // Close menu when clicking links
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        // Close menu when clicking outside
+        menuOverlay.addEventListener('click', (e) => {
+            if (e.target === menuOverlay) {
+                hamburger.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+       
+        // Testimonials data
+        const testimonials = [
+            {
+                text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.",
+                author: "John Doe, CTO of Client Company",
+                image: "https://via.placeholder.com/50"
+            },
+            {
+                text: "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+                author: "Jane Smith, CEO of Tech Innovators",
+                image: "https://via.placeholder.com/50"
+            },
+            {
+                text: "Aliquam erat volutpat. Curabitur in lacus erat. Vivamus tincidunt mauris eu est pretium, non sollicitudin neque aliquet.",
+                author: "Alex Johnson, Founder of StartUp Inc.",
+                image: "https://via.placeholder.com/50"
+            }
+        ];
+
+        // Current testimonial index
+        let currentTestimonial = 0;
+
+        // DOM elements
+        const testimonialText = document.getElementById('testimonialText');
+        const authorName = document.getElementById('authorName');
+        const authorImage = document.getElementById('authorImage');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        // Function to update testimonial content
+        function updateTestimonial(index) {
+            testimonialText.textContent = testimonials[index].text;
+            authorName.textContent = testimonials[index].author;
+            authorImage.src = testimonials[index].image;
+        }
+
+        // Event listeners for buttons
+        prevBtn.addEventListener('click', function() {
+            currentTestimonial = (currentTestimonial > 0) ? currentTestimonial - 1 : testimonials.length - 1;
+            updateTestimonial(currentTestimonial);
+        });
+
+        nextBtn.addEventListener('click', function() {
+            currentTestimonial = (currentTestimonial < testimonials.length - 1) ? currentTestimonial + 1 : 0;
+            updateTestimonial(currentTestimonial);
+        });
+
+        // Initialize the first testimonial
+        updateTestimonial(currentTestimonial);
+        
+    </script>
+</body>
+</html>
