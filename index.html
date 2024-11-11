@@ -382,6 +382,36 @@
     color:#3498db;
 }
 
+/* HTML: <div class="loader"></div> */
+.loader {
+  display: inline-flex;
+  border: 10px solid #2c3e50;
+  border-radius: 5px;
+}
+.loader::before,
+.loader::after {
+  content: "0 1 2 3 4 5 6 7 8 9 0";
+  font-size: 30px;
+  font-family: monospace;
+  font-weight: bold;
+  line-height: 1em;
+  height: 1em;
+  width: 1.2ch;
+  text-align: center;
+  outline:1px solid white;
+  color: #2c3e50;
+  text-shadow:0 0 0 white;
+  overflow: hidden; 
+  animation: l4 2s infinite linear;
+}
+.loader::before {
+  animation-duration: 4s;
+}
+@keyframes l4 {
+  100% {text-shadow:0 var(--t,-10em) 0 white}
+}
+
+
     </style>
 </head>
 <body>
@@ -389,7 +419,8 @@
     <nav class="navbar">
         <div class="brand">
             <span class="brand-icon">🏠</span>
-            <h1>24Tech Solutions</h1>
+            <!-- <h1>24Tech Solutions </h1> -->
+            <h1>245Tech Solutions <span class="loader"></span></h1>
         </div>
         <div class="hamburger">
             <span></span>
@@ -398,15 +429,7 @@
         </div>
     </nav>
      
-    <!-- <nav class="navbar">
-        <h1>TechCore Solutions</h1>
-        
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </nav> -->
+   
 
     <!-- Menu Overlay -->
     <div class="menu-overlay">
